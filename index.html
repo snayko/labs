@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTF Challenge</title>
+    <style>
+        /* Basic Reset and Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            /* Ensures the page takes at least the height of the viewport */
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Navigation Styling */
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* Main Content Styling */
+        .main {
+            flex: 1;
+            /* Allows the main content to grow and push the footer to the bottom */
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .ctf-container {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        /* Footer Styling */
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            margin-top: auto;
+            /* Pushes the footer to the bottom */
+        }
+
+        /* Style the "Copy to Clipboard" button */
+        #copy-button {
+            background-color: #007bff;
+            /* Blue color */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #copy-button:hover {
+            background-color: #0056b3;
+            /* Darker blue color on hover */
+        }
+
+        /* Style the "Copy to Clipboard" button */
+        .check-button {
+            background-color: #e20808;
+            /* Blue color */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .check-button:hover {
+            background-color: #0056b3;
+            /* Darker blue color on hover */
+        }
+
+        /* Style the text input box */
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* Tips Container Styling */
+        .tip {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 20px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tip Title Styling */
+        .tip-title {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        /* Tip Description Styling */
+        .tip-description {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        /* Tip Links Styling */
+        .tip-description a {
+            color: #007bff;
+            /* Blue color for links */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .tip-description a:hover {
+            color: #0056b3;
+            /* Darker blue color on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>CTF Challenge - Hash Cracking</h1>
+    </header>
+    <nav>
+        <ul>
+        </ul>
+    </nav>
+    <main>
+        <section class="ctf-container">
+            <h2>Hash Cracking Challenge</h2>
+            <p>
+                <b>Мета:</b> <br />
+                Базове поняття про хеш. <br />
+                І перевірка наскільки стійкою чи нестійкою може бути хеш функція. <br />
+                І чи варто взагалі його застосовувати у певних ситуаціях.<br />
+                Також буде бажано побачити які методи та алгоритми використовуються для злому або перебору хешів. Та скільки часу це зайняло.<br />
+                Висилайте код на ревью викладачу.
+            </p>
+            <p>
+                <b>Завдання:</b> <br />
+                Телефонний номер у форматі <b>+380?????????</b> <br />
+                (13 символів де перша частина це '+380' та інші це цифри)<br />
+                хешований за допомогою алгоритму <b>SHA-1</b>.<br />
+                Кожен байт хешу послідовно переведений у шістнадцяткову систему (x2).<br />
+                Потрібно знайти правильний номер!
+            </p>
+
+            <div class="hash-container">
+                <div class="hash-info">
+                    <p>Хешований номер:</p>
+                    <pre id="hashed-password">a19e57efbc84775aaa336407c02a309325a91437</pre>
+                </div>
+                <button id="copy-button">Скопіювати у буфер</button>
+            </div>
+
+            <br />
+
+            <form id="crack-form">
+                <label for="result">Введіть номер:</label>
+                <input type="text" id="result" name="result" required>
+                <br />
+                <label for="studentName">Ваше ім'я:</label>
+                <input type="text" id="studentName" name="studentName" required>
+                <br />
+
+                <button type="submit" class="check-button">Відправити результат викладачу</button>
+            </form>
+            <div id="result-message"></div>
+
+            <div class="tip">
+                <h3 class="tip-title">Корисна тулза</h3>
+                <p class="tip-description">Можливо ви захочете скористатись <a href="https://hashcat.net/hashcat/"
+                        target="_blank">Дізнатись більше</a></p>
+            </div>
+
+            <script>
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Find the "Copy to Clipboard" button and the hashed password element
+                    var copyButton = document.getElementById("copy-button");
+                    var hashedPasswordElement = document.getElementById("hashed-password");
+
+                    // Add a click event listener to the button
+                    copyButton.addEventListener("click", function () {
+                        // Create a temporary textarea element to hold the hash text
+                        var textarea = document.createElement("textarea");
+                        textarea.value = hashedPasswordElement.textContent;
+                        document.body.appendChild(textarea);
+
+                        // Select the text in the textarea and copy it to the clipboard
+                        textarea.select();
+                        document.execCommand("copy");
+
+                        // Remove the temporary textarea
+                        document.body.removeChild(textarea);
+                    });
+                });
+
+                const inputElement = document.getElementById('result');
+
+                inputElement.addEventListener('input', function (event) {
+                    const inputValue = event.target.value;
+
+                    // Remove any non-numeric and non-plus characters
+                    const cleanedValue = inputValue.replace(/[^0-9+]/g, '');
+
+                    // Limit the total length to 13 characters
+                    if (cleanedValue.length > 13) {
+                        event.target.value = cleanedValue.substring(0, 13);
+                    } else {
+                        event.target.value = cleanedValue;
+                    }
+                });
+
+                const form = document.getElementById('crack-form');
+                const resultDiv = document.getElementById('result-message');
+
+                let tries = 0;
+
+                // Function to get the number of tries from the cookie
+                function getTriesFromCookie() {
+                    const cookieValue = document.cookie
+                        .split('; ')
+                        .find(cookie => cookie.startsWith('lab1Tries='));
+                    if (cookieValue) {
+                        return parseInt(cookieValue.split('=')[1]);
+                    }
+                    return 0;
+                }
+
+                // Function to set the number of tries in the cookie
+                function setTriesInCookie(tries) {
+                    document.cookie = `lab1Tries=${tries}`;
+                }
+
+                // Initialize the number of tries from the cookie
+                tries = getTriesFromCookie();
+
+                if (isNaN(tries)) {
+                    tries = 0;
+                }
+
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault(); // Prevent default form submission
+
+                    if (tries >= 5) {
+                        resultDiv.textContent = 'Ви перевищели ліміт спроб!';
+                        return;
+                    }
+
+                    // Increment the number of tries
+                    tries++;
+                    setTriesInCookie(tries);
+
+                    // Get form data
+                    const formData = new FormData(form);
+
+                    // Convert form data to JSON object
+                    const formDataObject = {};
+                    formData.forEach((value, key) => {
+                        formDataObject[key] = value;
+                    });
+
+                    // Send a POST request to your service
+                    fetch('https://stanbots.azurewebsites.net/api/SendLabResults', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formDataObject),
+                    })
+                        .then(response => {
+                            if (response.status === 200) {
+                                return 'Прийнято!';
+                            } else {
+                                return 'Помилка передачі!';
+                            }
+                        })
+                        .then(result => {
+                            // Display the result to the user
+                            resultDiv.textContent = result;
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            resultDiv.textContent = 'Виникла помилка.';
+                        });
+                });
+            </script>
+
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Odesa National Polytechnic University</p>
+    </footer>
+</body>
+
+</html>
