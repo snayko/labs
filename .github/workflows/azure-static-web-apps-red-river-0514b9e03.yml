@@ -19,6 +19,12 @@ jobs:
         with:
           submodules: true
           lfs: false
+      # Add the Minify HTML step here
+      - name: Minify HTML
+        run: |
+          npm install html-minifier -g
+          html-minifier --collapse-whitespace --remove-comments --minify-css true --minify-js true -o index.min.html index.html
+          mv index.min.html index.html
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
