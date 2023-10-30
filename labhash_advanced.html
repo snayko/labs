@@ -342,12 +342,13 @@
                 inputElement.addEventListener('input', function (event) {
                     const inputValue = event.target.value;
 
-                    // Remove any non-numeric and non-plus characters
-                    const cleanedValue = inputValue.replace(/[^0-9+]/g, '');
+                    // Remove characters that are not Latin symbols, digits, and specific special characters
+                    const cleanedValue = inputValue.replace(/[^a-zA-Z0-9!?$#%@\s]/g, '');
 
-                    // Limit the total length to 13 characters
-                    if (cleanedValue.length > 13) {
-                        event.target.value = cleanedValue.substring(0, 13);
+
+                    // Limit the total length to 9 characters
+                    if (cleanedValue.length > 9) {
+                        event.target.value = cleanedValue.substring(0, 9);
                     } else {
                         event.target.value = cleanedValue;
                     }
